@@ -9,7 +9,7 @@ Requires VS 2017 and above. Uses .NET Framework 4.5 and MonoGame ver. 3.7.1
 - Download and install Monogame 3.7.1 from www.monogame.net/downloads 
 - Restore the NuGet dependancies, and build.
 
-# Dependancies
+# Dependencies
 - .NET Framework 4.5 (https://github.com/microsoft/dotnet)
 - MonoGame 3.7.1 (https://github.com/MonoGame/MonoGame)
 - NAudio (https://github.com/naudio/NAudio)
