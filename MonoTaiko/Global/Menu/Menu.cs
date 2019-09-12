@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using NAudio.Wave;
+using Microsoft.Xna.Framework.Audio;
 
 namespace MonoTaiko.Global.Menu
 {
@@ -30,7 +32,12 @@ namespace MonoTaiko.Global.Menu
         Texture2D[] itemTextures = new Texture2D[Enum.GetNames(typeof(Categories)).Length];
         Texture2D[] folderTextures = new Texture2D[Enum.GetNames(typeof(Categories)).Length];
 
+        WaveStream katSfx;
+
         List<MenuItem> items;
+
+        int selected = 0;
+        int next = 1;
 
         public Menu(ContentManager content, SpriteBatch spriteBatch)
         {
@@ -42,6 +49,8 @@ namespace MonoTaiko.Global.Menu
 
         public void LoadContent()
         {
+            katSfx = new WaveFileReader("Content/SFX/Global/kat.wav");
+
             for(int i = 0; i < Enum.GetNames(typeof(Categories)).Length; i++)
             {
                 itemTextures[i] = content.Load<Texture2D>("Texture/Menu/item_" + i);
@@ -56,14 +65,29 @@ namespace MonoTaiko.Global.Menu
             }
         }
 
-        public void Update(GameTime gameTime)
+        public void Update(GameTime gameTime, Input input, Jukebox sfx, SoundEffect kat)
         {
+            if (input.LRim())
+            {
+                selected--;
+                kat.Play();
+            }     
+            if (input.RRim())
+            {
+                selected++;
+                kat.Play();
+            }
 
+            if (selected >= items.Count) selected = 0;
+            if (selected < 0) selected = items.Count - 1;
         }
 
         public void Draw(GameTime gameTime)
         {
+            spriteBatch.Draw(itemTextures[selected], new Vector2(600, 105), Color.White);
 
+            if (items[selected].GetType() == typeof(Folder))
+                spriteBatch.Draw(folderTextures[selected], new Vector2(600, 91), Color.White);
         }
     }
 }

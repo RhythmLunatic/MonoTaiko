@@ -20,6 +20,12 @@
 /processorParam:TextureFormat=Compressed
 /build:Font/dfp20.spritefont
 
+#begin kat.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:kat.wav
+
 #begin Texture/Don/Anim/SongSelect/idle.png
 /importer:TextureImporter
 /processor:TextureProcessor

@@ -2,48 +2,60 @@
 using NAudio.Wave;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace MonoTaiko.Global
 {
-    class Music
+    class Jukebox
     {
         static readonly object audioLock = new object();
-        public static WaveOutEvent musicOut = new WaveOutEvent();
+        public WaveOutEvent musicOut;
 
-        public static bool isPlaying;
+        public bool isPlaying;
 
-        public static void Play(VorbisWaveReader audio)
+        public Jukebox()
+        {
+            musicOut = new WaveOutEvent();
+        }
+
+        public void Play(VorbisWaveReader audio)
         {
 #pragma warning disable
             audio_init(audio, 0.5f, 0f);
             isPlaying = true;
         }
 
-        public static void Play(VorbisWaveReader audio, float volume)
+        public void Play(VorbisWaveReader audio, float volume)
         {
 #pragma warning disable
             audio_init(audio, volume, 0f);
             isPlaying = true;
         }
 
-        public static void Play(VorbisWaveReader audio, float volume, float startPos)
+        public void Play(VorbisWaveReader audio, float volume, float startPos)
         {
 #pragma warning disable
             audio_init(audio, volume, startPos);
             isPlaying = true;
         }
 
-        public static void Play(LoopStream audio)
+        public void Play(LoopStream audio)
         {
 #pragma warning disable
             audio_init(audio, 0.5f, 0f);
             isPlaying = true;
         }
 
-        public static void Stop(bool dispose)
+        public void Play(WaveStream audio)
+        {
+            audio_init(audio, 0.5f, 0f);
+            isPlaying = true;
+        }
+
+        public void Stop(bool dispose)
         {
             musicOut.Stop();
             isPlaying = false;
@@ -51,26 +63,7 @@ namespace MonoTaiko.Global
             if (dispose) musicOut.Dispose();
         }
 
-        private static async Task audio_init(VorbisWaveReader audio, float volume, float startPos)
-        {
-            await Task.Run(() =>
-            {
-                lock (audioLock)
-                {
-                    if (musicOut.PlaybackState == PlaybackState.Stopped)
-                    {
-                        musicOut.Init(audio);
-                        audio.CurrentTime = TimeSpan.FromSeconds(startPos);
-                        musicOut.Volume = volume;
-                        musicOut.Play();
-                        return;
-                    }
-                    else return;
-                }
-            });
-        }
-
-        private static async Task audio_init(LoopStream audio, float volume, float startPos)
+        private async Task audio_init(WaveStream audio, float volume, float startPos)
         {
             await Task.Run(() =>
             {
