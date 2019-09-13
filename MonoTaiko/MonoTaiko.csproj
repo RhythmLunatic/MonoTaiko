@@ -50,6 +50,7 @@
     <Compile Include="Global\Menu\MenuItem.cs" />
     <Compile Include="Global\Jukebox.cs" />
     <Compile Include="Global\Input.cs" />
+    <Compile Include="Global\Menu\MusicWheel.cs" />
     <Compile Include="Global\ScreenManager\Screen.cs" />
     <Compile Include="Global\ScreenManager\ScreenManager.cs" />
     <Compile Include="Global\Sprite\SpriteAnimation.cs" />
